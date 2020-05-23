@@ -5,4 +5,6 @@
     <string name="splashtime_key">splashtime_settings</string>
     <string name="notif_key">notif_setings</string>
     <string name="toast_key">toast_setings</string>
+    <string name="movie_name">Enter movie name</string>
+    <string name="search">Search</string>
 </resources>

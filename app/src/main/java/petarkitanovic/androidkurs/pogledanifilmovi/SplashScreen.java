@@ -27,7 +27,7 @@ public class SplashScreen extends AppCompatActivity {
 
         String splashTime = prefs.getString(getString(R.string.splashtime_key), "3000");
 
-        boolean splash = prefs.getBoolean(getString(R.string.splash_key), true);
+        boolean splash = prefs.getBoolean(getString(R.string.splash_key), false);
 
         if (splash) {
             setContentView(R.layout.splash_screen);
