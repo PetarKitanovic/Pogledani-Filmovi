@@ -159,51 +159,63 @@ public class PregledSvihPogledanihFilmova extends AppCompatActivity implements A
 
     public void deleteFilmove() {
 
-        AlertDialog dialogDelete = new AlertDialog.Builder(this)
-                .setTitle("Brisanje svih filmova")
-                .setMessage("Da li zelite da obrisete?")
-                .setPositiveButton("DA", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        try {
+            filmovi = getDataBaseHelper().getFilmoviDao().queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-                        try {
-                            ArrayList<Filmovi> filmoviZaBrisanje = (ArrayList<Filmovi>) getDataBaseHelper().getFilmoviDao().queryForAll();
-                            getDataBaseHelper().getFilmoviDao().delete(filmoviZaBrisanje);
+        if (filmovi.isEmpty()){
+            Toast.makeText(this, "Lista filmova je vec prazna", Toast.LENGTH_SHORT).show();
+        }else {
+            AlertDialog dialogDelete = new AlertDialog.Builder(this)
+                    .setTitle("Brisanje svih filmova")
+                    .setMessage("Da li zelite da obrisete?")
+                    .setPositiveButton("DA", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            try {
+                                ArrayList<Filmovi> filmoviZaBrisanje = (ArrayList<Filmovi>) getDataBaseHelper().getFilmoviDao().queryForAll();
+                                getDataBaseHelper().getFilmoviDao().delete(filmoviZaBrisanje);
 
 
-                            adapter.removeAll();
-                            adapter.notifyDataSetChanged();
+                                adapter.removeAll();
+                                adapter.notifyDataSetChanged();
 
-                            String tekstNotifikacije = "Svi fimovi obrisani";
-                            boolean toast = prefs.getBoolean(getString(R.string.toast_key), false);
-                            boolean notif = prefs.getBoolean(getString(R.string.notif_key), false);
+                                String tekstNotifikacije = "Svi fimovi obrisani";
+                                boolean toast = prefs.getBoolean(getString(R.string.toast_key), false);
+                                boolean notif = prefs.getBoolean(getString(R.string.notif_key), false);
 
-                            if (toast) {
-                                Toast.makeText(PregledSvihPogledanihFilmova.this, tekstNotifikacije, Toast.LENGTH_LONG).show();
+                                if (toast) {
+                                    Toast.makeText(PregledSvihPogledanihFilmova.this, tekstNotifikacije, Toast.LENGTH_LONG).show();
 
+                                }
+
+                                if (notif) {
+                                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                    NotificationCompat.Builder builder = new NotificationCompat.Builder(PregledSvihPogledanihFilmova.this, NOTIF_CHANNEL_ID);
+                                    builder.setSmallIcon(android.R.drawable.ic_menu_delete);
+                                    builder.setContentTitle("Notifikacija");
+                                    builder.setContentText(tekstNotifikacije);
+
+                                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
+
+                                    builder.setLargeIcon(bitmap);
+                                    notificationManager.notify(1, builder.build());
+
+                                }
+                            } catch (SQLException e) {
+                                e.printStackTrace();
                             }
-
-                            if (notif) {
-                                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                                NotificationCompat.Builder builder = new NotificationCompat.Builder(PregledSvihPogledanihFilmova.this, NOTIF_CHANNEL_ID);
-                                builder.setSmallIcon(android.R.drawable.ic_menu_delete);
-                                builder.setContentTitle("Notifikacija");
-                                builder.setContentText(tekstNotifikacije);
-
-                                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
-
-                                builder.setLargeIcon(bitmap);
-                                notificationManager.notify(1, builder.build());
-
-                            }
-                        } catch (SQLException e) {
-                            e.printStackTrace();
                         }
-                    }
-                })
-                .setNegativeButton("NE", null)
-                .show();
+                    })
+                    .setNegativeButton("NE", null)
+                    .show();
+
+        }
+
 
 
 
