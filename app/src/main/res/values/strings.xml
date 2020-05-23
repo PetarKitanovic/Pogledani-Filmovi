@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Pogledani Filmovi</string>
+    <string name="made_by">Petar Kitanovic</string>
+    <string name="splash_key">splash_settings</string>
+    <string name="splashtime_key">splashtime_settings</string>
+    <string name="notif_key">notif_setings</string>
+    <string name="toast_key">toast_setings</string>
 </resources>
