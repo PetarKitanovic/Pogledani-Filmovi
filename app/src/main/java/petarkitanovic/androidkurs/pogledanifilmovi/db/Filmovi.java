@@ -18,6 +18,9 @@ public class Filmovi {
     public static final String FIELD_NAME_JEZIK   = "jezik";
     public static final String FIELD_NAME_AWARDS   = "awards";
     public static final String FIELD_NAME_PLOT   = "plot";
+    public static final String FIELD_NAME_RATING   = "rating";
+    public static final String FIELD_NAME_HOUR   = "hour";
+    public static final String FIELD_NAME_MIN   = "min";
 
 
 
@@ -51,7 +54,40 @@ public class Filmovi {
     @DatabaseField(columnName = FIELD_NAME_PLOT)
     private String mPlot;
 
+    @DatabaseField(columnName = FIELD_NAME_RATING)
+    private Float mRating;
+
+    @DatabaseField(columnName = FIELD_NAME_HOUR)
+    private int mHour;
+
+    @DatabaseField(columnName = FIELD_NAME_MIN)
+    private int mMin;
+
     public Filmovi() {
+    }
+
+    public int getmHour() {
+        return mHour;
+    }
+
+    public void setmHour(int mHour) {
+        this.mHour = mHour;
+    }
+
+    public int getmMin() {
+        return mMin;
+    }
+
+    public void setmMin(int mMin) {
+        this.mMin = mMin;
+    }
+
+    public float getmRating() {
+        return mRating;
+    }
+
+    public void setmRating(Float mRating) {
+        this.mRating = mRating;
     }
 
     public int getmId() {

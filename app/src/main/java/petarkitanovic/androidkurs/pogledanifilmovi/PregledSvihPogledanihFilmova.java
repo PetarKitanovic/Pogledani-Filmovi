@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -38,8 +39,6 @@ import petarkitanovic.androidkurs.pogledanifilmovi.adapteri.AdapterLista;
 import petarkitanovic.androidkurs.pogledanifilmovi.db.DatabaseHelper;
 import petarkitanovic.androidkurs.pogledanifilmovi.db.Filmovi;
 
-import static petarkitanovic.androidkurs.pogledanifilmovi.Pretraga.KEY;
-
 public class PregledSvihPogledanihFilmova extends AppCompatActivity implements AdapterLista.OnItemClickListener {
 
     List<String> drawerItems;
@@ -52,7 +51,6 @@ public class PregledSvihPogledanihFilmova extends AppCompatActivity implements A
 
     private RecyclerView recyclerView;
     private AdapterLista adapter;
-    private RecyclerView.LayoutManager layoutManager;
     private DatabaseHelper databaseHelper;
 
     private List<Filmovi> filmovi;
@@ -89,7 +87,7 @@ public class PregledSvihPogledanihFilmova extends AppCompatActivity implements A
     public void setupToolbar() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.BLACK);
+        toolbar.setTitleTextColor(Color.WHITE);
         final ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
@@ -124,9 +122,8 @@ public class PregledSvihPogledanihFilmova extends AppCompatActivity implements A
                         break;
                     case 3:
                         title = "Pregled svih filmova";
-
-
                         deleteFilmove();
+
                         break;
 
                     default:
@@ -165,9 +162,9 @@ public class PregledSvihPogledanihFilmova extends AppCompatActivity implements A
             e.printStackTrace();
         }
 
-        if (filmovi.isEmpty()){
+        if (filmovi.isEmpty()) {
             Toast.makeText(this, "Lista filmova je vec prazna", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             AlertDialog dialogDelete = new AlertDialog.Builder(this)
                     .setTitle("Brisanje svih filmova")
                     .setMessage("Da li zelite da obrisete?")
@@ -183,7 +180,7 @@ public class PregledSvihPogledanihFilmova extends AppCompatActivity implements A
                                 adapter.removeAll();
                                 adapter.notifyDataSetChanged();
 
-                                String tekstNotifikacije = "Svi fimovi obrisani";
+                                String tekstNotifikacije = "Svi filmovi obrisani";
                                 boolean toast = prefs.getBoolean(getString(R.string.toast_key), false);
                                 boolean notif = prefs.getBoolean(getString(R.string.notif_key), false);
 
@@ -206,6 +203,7 @@ public class PregledSvihPogledanihFilmova extends AppCompatActivity implements A
                                     notificationManager.notify(1, builder.build());
 
                                 }
+
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
@@ -215,9 +213,6 @@ public class PregledSvihPogledanihFilmova extends AppCompatActivity implements A
                     .show();
 
         }
-
-
-
 
     }
 
@@ -234,7 +229,12 @@ public class PregledSvihPogledanihFilmova extends AppCompatActivity implements A
             e.printStackTrace();
         }
 
-
+        TextView text = findViewById(R.id.prazna_lista_txt);
+        if (filmovi.isEmpty()) {
+            text.setVisibility(View.VISIBLE);
+        } else {
+            text.setVisibility(View.GONE);
+        }
         adapter = new AdapterLista(this, filmovi, this);
         recyclerView.setAdapter(adapter);
 
